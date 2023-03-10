@@ -1,5 +1,7 @@
 #!/bin/bash
+import json
 import sys
+from typing import Union, Tuple
 
 
 class Robot:
@@ -163,42 +165,87 @@ def finish():
     sys.stdout.flush()
 
 
+def read_frame_data() -> Union[Tuple[int, dict], None]:
+    """
+    读取每一帧的数据
+    :return: 每一帧的结构化字典数据
+    """
+    try:
+        # 读取第一行帧序列和金钱数
+        _frame, _coin = map(int, sys.stdin.readline().split())
+    except ValueError:
+        # 文件到达末尾
+        return None
+
+    # 读取工作台数量，来判断接下来要读几行数据
+    work_num = int(sys.stdin.readline())
+
+    # 初始化帧字典
+    _frame_dict = {
+        'coin': _coin,
+        'work_num': work_num,
+        'works': [],
+        'robots': []
+    }
+
+    # f.write('%d %d' % (frame, coin))
+    # f.write(str(work_num))
+
+    # 读取工作台的状态数据
+    for _ in range(work_num):
+        lineCache = sys.stdin.readline()
+        # f.write(lineCache)
+        lineCache = lineCache.split()
+        _frame_dict['works'].append({
+            'type': int(lineCache[0]),
+            'x': float(lineCache[1]),
+            'y': float(lineCache[2]),
+            'remain_time': int(lineCache[3]),
+            'input_type': int(lineCache[4]),
+            'output_type': int(lineCache[5])
+        })
+
+    # 读取机器人的状态数据
+    for _ in range(4):
+        lineCache = sys.stdin.readline()
+        # f.write(lineCache)
+        lineCache = lineCache.split()
+        _frame_dict['robots'].append({
+            'work_id': int(lineCache[0]),
+            'item_type': int(lineCache[1]),
+            'time_coef': float(lineCache[2]),
+            'impact_coef': float(lineCache[3]),
+            'vm': float(lineCache[4]),
+            'vx': float(lineCache[5]),
+            'vy': float(lineCache[6]),
+            'toward': float(lineCache[7]),
+            'x': float(lineCache[8]),
+            'y': float(lineCache[9])
+        })
+
+    read_util_ok()
+
+    return _frame, _frame_dict
+
+
 if __name__ == '__main__':
     # 存放txt
-    f = open('input.txt', 'w')
+    # f = open('input.txt', 'w')
+
+    # 所有帧数据
+    frames = []
 
     read_util_ok()
     finish()
+
     while True:
-        # 读取第一行帧序列和金钱数
-        line = sys.stdin.readline()
-
-        # 读取工作台数量，来判断接下来要读几行数据
-        work_num = int(sys.stdin.readline())
-        temp = sys.stdout
-        sys.stdout = f
-        num = 1
-        print(line)
-        print(work_num)
-        while num <= work_num:
-            lineCache = sys.stdin.readline()
-            print(lineCache)
-            num += 1
-
-        # 读取机器人的状态数据
-        robot_line = 1
-        while robot_line <= 4:
-            lineCache = sys.stdin.readline()
-            print(lineCache)
-            robot_line += 1
-        sys.stdout = temp
-
-        # 官方代码，主要是获取帧数ID
-        if not line:
+        try:
+            frame_id, frame_dict = read_frame_data()
+        except TypeError:
+            # 文件到达末尾
             break
-        parts = line.split(' ')
-        frame_id = int(parts[0])
-        read_util_ok()
+
+        frames.append(frame_dict)
 
         # 官方代码，控制机器人的行动
         sys.stdout.write('%d\n' % frame_id)
@@ -207,3 +254,6 @@ if __name__ == '__main__':
             sys.stdout.write('forward %d %d\n' % (robot_id, line_speed))
             sys.stdout.write('rotate %d %f\n' % (robot_id, angle_speed))
         finish()
+
+    with open('input.json', 'w') as f:
+        json.dump(frames, f)
