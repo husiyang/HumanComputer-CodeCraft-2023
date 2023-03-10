@@ -1,3 +1,4 @@
 # 忽略任何目录下的.idea和venv文件夹
 .idea/
 venv/
+replay/
