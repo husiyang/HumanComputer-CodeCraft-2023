@@ -5,76 +5,167 @@ from typing import Union, Tuple
 
 
 class Robot:
-
     """
     机器人的属性有：
     ID，坐标，半径（常态），半径（持有物品），面积，密度，质量，操作（前进、后退、旋转），
     携带的产品类型，角速度（最大旋转速度），线速度（最大前进速度，最大后退速度），朝向，
     最大牵引力（机器人的加速/减速/防侧滑均由牵引力驱动），
     最大力矩（机器人的旋转由力矩驱动），
-    当前所处工作台，资金
+    当前所处工作台
+
+    ***时间价值系数，碰撞价值系数***
+
     """
+
     def __init__(self):
+        """
+        ID，int
+        携带物品类型，int
+        角速度，float
+        线速度，x,y两个float
+        朝向，float
+        坐标，x,y两个float
+        distances,[]
+        target：workstationID int
+        """
         pass
+
+    """
+    计算一个和一个工作台之间的距离
+    返回距离
+    """
 
     def get_distance(self):
         pass
 
+    """
+    机器人的面积
+    """
+
     def get_area(self):
         pass
+
+    """
+    算质量
+    """
 
     def get_mass(self):
         pass
 
+    """
+    计算一个机器人到一个工作台的时间
+    """
+
     def get_time(self):
         pass
+
+    """
+    获取机器人当前的朝向
+    """
 
     def get_orientation(self):
         pass
 
+    """
+    获取机器人当前的坐标
+    """
+
     def get_axis(self):
         pass
+
+    """
+    获取机器人当前的速度
+    """
 
     def get_velocity(self):
         pass
 
-    def get_money(self):
-        pass
+    """
+    获取机器人携带的产品的类型
+    """
 
     def get_current_product_type(self):
         pass
 
+    """
+    计算机器人与工作台的距离是否小于0.4m，如果有多个工作台，选最近的一个，
+    如果一样近，那么以ID排在前面的工作台为准
+    返回工作台的ID
+    """
+
     def get_current_workstation(self):
         pass
+
+    """
+    设置机器人前进速度
+    """
 
     def forward(self):
         pass
 
+    """
+    设置机器人的回退速度
+    """
+
     def back_forward(self):
         pass
+
+    """
+    设置机器人的旋转速度
+    """
 
     def rotate(self):
         pass
 
+    """
+    碰撞相关函数
+    """
+
     def crash(self):
         pass
+
+    """
+    购买产品，设置机器人的buy指令，传给判题器
+    """
 
     def buy_product(self):
         pass
 
+    """
+    卖出产品，设置target为null，设置机器人的sell指令，传给判题器
+    """
+
     def sell_product(self):
         pass
+
+    """
+    销毁物品，设置机器人no destroy，传给判题器
+    """
 
     def destroy_product(self):
         pass
 
+    """
+    接受需求队列任务，改变相应的朝向和速度，改变target为workStationID。
+    """
+
+    def send_task_request(self):
+        pass
+
+    """
+    改变机器人的target，return 当前ID
+    """
+
+    def change_target(self):
+        pass
+
 
 class WorkStation:
-
     """
     工作台的属性有：
-    ID，坐标，工作台类型，物品格，存储物品，生产物品，生产周期，生产配方
+    ID，坐标，工作台类型，物品格，生产物品，生产周期，生产配方
     """
+
     def __init__(self):
         pass
 
@@ -84,73 +175,89 @@ class WorkStation:
     def get_type(self):
         pass
 
-    def get_recipe(self):
+    """
+    发送request到需求队列
+    """
+
+    def send_product_request(self):
         pass
 
     def get_cycle_time(self):
         pass
 
+    """
+    获取产品格状态，返回产品类型
+    """
+
     def get_product_wait(self):
         pass
+
+    """
+    获取原材料格状态，获取产品类型
+    """
 
     def get_product_making(self):
         pass
 
-    def store(self):
+    """
+    判断原材料格前后两帧的状态改变，判断二进制数是否减小，return true false
+    """
+
+    def judge_material_box(self):
         pass
 
 
 class Product:
-
     """
     产品的属性有：
-    ID，产品类型，购买价，原始售出价，真实售价，时间价值系数，碰撞价值系数，
-    持有帧数，持有时累计碰撞冲量
+    产品类型
     """
+
     def __init__(self):
         pass
 
     def get_type(self):
         pass
 
-    def get_purchase_price(self):
+
+# 需求队列
+class Request:
+    """
+    帧ID，工作台的请求
+    """
+
+    def __init__(self):
         pass
 
-    def get_sale_price(self):
+    def get_workstation_request(self):
         pass
 
-    def get_real_sale_price(self):
+    def get_robot_request(self):
         pass
 
-    def get_time_value(self):
+    def push(self):
         pass
 
-    def get_crash_value(self):
-        pass
-
-    def get_FPS_all(self):
-        pass
-
-    def get_crash_all(self):
+    def pop(self):
         pass
 
 
-def get_current_FPS():
-    pass
-
-
-def get_current_money():
-    pass
-
-
+"""
+return一个numpy array矩阵，所有机器人到所有工作台的距离
+"""
 def distance_robots_workstations():
     pass
 
 
+"""
+return所有工作台的剩余时间
+"""
 def time_workstations():
     pass
 
-
+"""
+return一个numpy array矩阵，所有机器人到所有工作台的时间
+"""
 def time_robots_workstations():
     pass
 
