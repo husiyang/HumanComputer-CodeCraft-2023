@@ -160,53 +160,6 @@ class Robot:
         pass
 
 
-class WorkStation:
-    """
-    工作台的属性有：
-    ID，坐标，工作台类型，物品格，生产物品，生产周期，生产配方
-    """
-
-    def __init__(self):
-        pass
-
-    def get_axis(self):
-        pass
-
-    def get_type(self):
-        pass
-
-    """
-    发送request到需求队列
-    """
-
-    def send_product_request(self):
-        pass
-
-    def get_cycle_time(self):
-        pass
-
-    """
-    获取产品格状态，返回产品类型
-    """
-
-    def get_product_wait(self):
-        pass
-
-    """
-    获取原材料格状态，获取产品类型
-    """
-
-    def get_product_making(self):
-        pass
-
-    """
-    判断原材料格前后两帧的状态改变，判断二进制数是否减小，return true false
-    """
-
-    def judge_material_box(self):
-        pass
-
-
 class Product:
     """
     产品的属性有：
