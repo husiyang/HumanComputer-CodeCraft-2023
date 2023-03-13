@@ -193,7 +193,10 @@ class Robot:
     """
 
     def send_task_request(self, workstations: List[WorkStation], request: Request) -> int:
-        target_ID, product_type = request.pop()
+        request_cache = request.pop()
+        target_ID, product_type = request_cache.split()
+        target_ID = int(target_ID)
+        product_type = int(product_type)
         self.target_ID = target_ID
         IDs = []
         for workstation in workstations:

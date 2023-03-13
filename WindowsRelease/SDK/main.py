@@ -71,6 +71,15 @@ def time_robots_workstations(robots: List[Robot], workstations: List[WorkStation
     return times
 
 
+"""
+机器人路径调度
+"""
+
+
+def path_plan():
+    pass
+
+
 def read_util_ok():
     while input() != "OK":
         pass
