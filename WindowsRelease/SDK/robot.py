@@ -16,7 +16,8 @@ class Robot:
 
     """
 
-    def __init__(self):
+    def __init__(self, ID: int, workstation_ID: int, product_type: int, time_value: float, crash_value: float,
+                 ang_velocity: float, velo_x: float, velo_y: float, orientation: float, x: float, y: float):
         """
         ID，int
         携带物品类型，int
@@ -27,22 +28,24 @@ class Robot:
         distances,[]
         target：workstationID int
         """
-        self.ID = None
-        self.workstation_ID = None
-        self.axis_x = None
-        self.axis_y = None
+        self.ID = ID
+        self.workstation_ID = workstation_ID
+        self.axis_x = x
+        self.axis_y = y
         self.velocity = None
-        self.ang_velocity = None
-        self.orientation = None
+        self.ang_velocity = ang_velocity
+        self.orientation = orientation
         self.target_ID = None
-        self.product_type = None
-        self.time_value = None
-        self.crash_value = None
+        self.product_type = product_type
+        self.time_value = time_value
+        self.crash_value = crash_value
         self.work_ID = None
         self.distances = []
         self.times = []
         self.distances_robot = []
         self.radius = None
+
+        self.calculate_velocity(velo_x, velo_y)
 
     def get_robot_ID(self) -> int:
         return self.ID
@@ -108,7 +111,7 @@ class Robot:
     获取机器人当前的速度
     """
 
-    def get_velocity(self, velo_x, velo_y) -> float:
+    def get_velocity(self) -> float:
         return self.velocity
 
     """

@@ -1,10 +1,11 @@
 #!/bin/bash
-import json
 import sys
 from typing import Union, Tuple, List
+
+import numpy as np
+
 from robot import Robot
 from workstation import WorkStation
-import numpy as np
 
 
 class Product:
@@ -49,13 +50,13 @@ def distance_robots_workstations(robots: List[Robot], workstations: List[WorkSta
     return distances
 
 
-"""
-return所有工作台的剩余时间
-"""
-
-
-def time_workstations():
-    pass
+def time_workstations(Works: List[WorkStation]) -> List[int]:
+    """
+    返回所有工作台的剩余时间
+    :param Works: 所有工作台组成的列表
+    :return: 所有工作台剩余生产时间组成的列表
+    """
+    return [_.cycle_time for _ in Works]
 
 
 """
@@ -121,32 +122,34 @@ def read_frame_data() -> Union[Tuple[int, dict], None]:
         lineCache = sys.stdin.readline()
         # f.write(lineCache)
         lineCache = lineCache.split()
-        _frame_dict['works'].append({
-            'type': int(lineCache[0]),
-            'x': float(lineCache[1]),
-            'y': float(lineCache[2]),
-            'remain_time': int(lineCache[3]),
-            'input_type': int(lineCache[4]),
-            'output_type': int(lineCache[5])
-        })
+        _frame_dict['works'].append(WorkStation(
+            ID=_,
+            x=float(lineCache[1]),
+            y=float(lineCache[2]),
+            work_type=int(lineCache[0]),
+            input_status=int(lineCache[4]),
+            output_status=int(lineCache[5]),
+            cycle_time=int(lineCache[3])
+        ))
 
     # 读取机器人的状态数据
     for _ in range(4):
         lineCache = sys.stdin.readline()
         # f.write(lineCache)
         lineCache = lineCache.split()
-        _frame_dict['robots'].append({
-            'work_id': int(lineCache[0]),
-            'item_type': int(lineCache[1]),
-            'time_coef': float(lineCache[2]),
-            'impact_coef': float(lineCache[3]),
-            'vm': float(lineCache[4]),
-            'vx': float(lineCache[5]),
-            'vy': float(lineCache[6]),
-            'toward': float(lineCache[7]),
-            'x': float(lineCache[8]),
-            'y': float(lineCache[9])
-        })
+        _frame_dict['robots'].append(Robot(
+            ID=_,
+            workstation_ID=int(lineCache[0]),
+            product_type=int(lineCache[1]),
+            time_value=float(lineCache[2]),
+            crash_value=float(lineCache[3]),
+            ang_velocity=float(lineCache[4]),
+            velo_x=float(lineCache[5]),
+            velo_y=float(lineCache[6]),
+            orientation=float(lineCache[7]),
+            x=float(lineCache[8]),
+            y=float(lineCache[9])
+        ))
 
     read_util_ok()
 
@@ -179,6 +182,3 @@ if __name__ == '__main__':
             sys.stdout.write('forward %d %d\n' % (robot_id, line_speed))
             sys.stdout.write('rotate %d %f\n' % (robot_id, angle_speed))
         finish()
-
-    with open('input.json', 'w') as f:
-        json.dump(frames, f)
